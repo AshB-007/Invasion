@@ -25,7 +25,8 @@ class Settings:
        self.laserfier_speed *= self.speedup_scale
        self.brown_indian_speed *= self.speedup_scale
        self.bullet_speed *= self.speedup_scale
-       self.brown_indian_points = int(self.brown_indian_points * self.score_scale)   
+       self.brown_indian_points = int(self.brown_indian_points * self.score_scale)  
+       print("hi") 
  
 
 
