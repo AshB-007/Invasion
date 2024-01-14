@@ -7,14 +7,14 @@ from settings import Settings
 from game_stats import GameStats
 from laserfier import Laserfier
 from bullet import Bullet
-from brown_indian import Indian
+from quasi import Quasi
 from button import Button
 from scoreboard import Scoreboard
 
 #Sound Effects
 pygame.mixer.init()
 bullet_sound = pygame.mixer.Sound('sounds\laser1.wav')
-brown_indian_sound = pygame.mixer.Sound('sounds\mixkit-arcade-game-explosion-2759.wav')      
+quasi_sound = pygame.mixer.Sound('sounds\mixkit-arcade-game-explosion-2759.wav')      
 
 class AlienInvasion:
     """Overall class to manage game assets and behaviour."""
@@ -31,7 +31,7 @@ class AlienInvasion:
           self.sb = Scoreboard(self)
           self.laserfier = Laserfier(self)
           self.bullets = pygame.sprite.Group()
-          self.brown_indians = pygame.sprite.Group()
+          self.quasis = pygame.sprite.Group()
           self._create_fleet()
           self.play_button = Button(self, "Play")
           self.game_active = False
@@ -41,7 +41,7 @@ class AlienInvasion:
              if self.game_active:
                  self.laserfier.update()
                  self._update_bullets()
-                 self._update_brown_indians()       
+                 self._update_quasis()       
              self._update_screen()
              self.clock.tick(60)    
     def _check_events(self):
@@ -61,7 +61,7 @@ class AlienInvasion:
                self.sb.prep_laserfiers()
                self.game_active = True
                self.bullets.empty()
-               self.brown_indians.empty()
+               self.quasis.empty()
                self._create_fleet()
                self.laserfier.center_laserfier()
                pygame.mouse.set_visible(False)
@@ -101,14 +101,14 @@ class AlienInvasion:
                   self.bullets.remove(bullet)
           self._check_collision()          
     def _check_collision(self):          
-          collisions = pygame.sprite.groupcollide(self.bullets, self.brown_indians, True, True)
+          collisions = pygame.sprite.groupcollide(self.bullets, self.quasis, True, True)
           if collisions:
-               for brown_indians in collisions.values():
-                   self.stats.score += self.settings.brown_indian_points * len(brown_indians)
+               for quasis in collisions.values():
+                   self.stats.score += self.settings.quasi_points * len(quasis)
                    self.sb.prep_score()
                    self.sb.check_high_score()
-                   brown_indian_sound.play()
-          if not self.brown_indians:
+                   quasi_sound.play()
+          if not self.quasis:
                self.bullets.empty
                self._create_fleet()
                self.settings.increase_speed()
@@ -119,7 +119,7 @@ class AlienInvasion:
                self.stats.laserfiers_left -= 1
                self.sb.prep_laserfiers()
                self.bullets.empty()
-               self.brown_indians.empty()
+               self.quasis.empty()
                self._create_fleet()
                self.laserfier.center_laserfier()
                sleep(1.0)
@@ -127,39 +127,39 @@ class AlienInvasion:
                self.game_active = False   
     def _check_bottom_reach(self):
           screen_rect = self.screen.get_rect()
-          for brown_indian in self.brown_indians.sprites():
-               if brown_indian.rect.bottom >= screen_rect.bottom:
+          for quasi in self.quasis.sprites():
+               if quasi.rect.bottom >= screen_rect.bottom:
                     self._laserfier_hit()
                     break 
-    def _create_brown_indian(self,x_position,y_position):
-          new_brown_indian = Indian(self)
-          new_brown_indian.x = x_position
-          new_brown_indian.rect.x = x_position
-          new_brown_indian.rect.y  = y_position
-          self.brown_indians.add(new_brown_indian) 
+    def _create_quasi(self,x_position,y_position):
+          new_quasi = Quasi(self)
+          new_quasi.x = x_position
+          new_quasi.rect.x = x_position
+          new_quasi.rect.y  = y_position
+          self.quasis.add(new_quasi) 
     def _check_fleet_edges(self):
-          for brown_indian in self.brown_indians.sprites():
-               if brown_indian.check_edges():
+          for quasi in self.quasis.sprites():
+               if quasi.check_edges():
                     self._change_fleet_direction()
                     break
     def _change_fleet_direction(self):
-          for brown_indian in self.brown_indians.sprites():
-               brown_indian.rect.y += self.settings.fleet_drop_speed
+          for quasi in self.quasis.sprites():
+               quasi.rect.y += self.settings.fleet_drop_speed
           self.settings.fleet_direction *= -1                  
     def _create_fleet(self):
-          brown_indian = Indian(self)
-          brown_indian_width,brown_indian_height = brown_indian.rect.size
-          current_x,current_y = brown_indian_width,brown_indian_height
-          while current_y < (self.settings.screen_height - 3 * brown_indian_height):
-               while current_x < (self.settings.screen_width - 2 * brown_indian_width):
-                   self._create_brown_indian(current_x,current_y)
-                   current_x += 2 * brown_indian_width  
-               current_x = brown_indian_width 
-               current_y += 2 * brown_indian_height  
-    def _update_brown_indians(self):
+          quasi = Quasi(self)
+          quasi_width,quasi_height = quasi.rect.size
+          current_x,current_y = quasi_width,quasi_height
+          while current_y < (self.settings.screen_height - 3 * quasi_height):
+               while current_x < (self.settings.screen_width - 2 * quasi_width):
+                   self._create_quasi(current_x,current_y)
+                   current_x += 2 * quasi_width  
+               current_x = quasi_width 
+               current_y += 2 * quasi_height  
+    def _update_quasis(self):
           self._check_fleet_edges()
-          self.brown_indians.update()
-          if pygame.sprite.spritecollideany(self.laserfier, self.brown_indians):
+          self.quasis.update()
+          if pygame.sprite.spritecollideany(self.laserfier, self.quasis):
                self._laserfier_hit()
           self._check_bottom_reach()      
     def _update_screen(self):
@@ -167,7 +167,7 @@ class AlienInvasion:
           for bullet in self.bullets.sprites():
              bullet.draw_bullets()
           self.laserfier.blitme()
-          self.brown_indians.draw(self.screen)
+          self.quasis.draw(self.screen)
           self.sb.show_score()
           if not self.game_active:
                self.play_button.draw_button()
