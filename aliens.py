@@ -150,7 +150,7 @@ class AlienInvasion:
           quasi = Quasi(self)
           quasi_width,quasi_height = quasi.rect.size
           current_x,current_y = quasi_width,quasi_height
-          while current_y < (self.settings.screen_height - 3 * quasi_height):
+          while current_y < (self.settings.screen_height - 5 * quasi_height):
                while current_x < (self.settings.screen_width - 2 * quasi_width):
                    self._create_quasi(current_x,current_y)
                    current_x += 2 * quasi_width  
@@ -178,7 +178,6 @@ class AlienInvasion:
               path = Path('high_score.json')
               contents = json.dumps(self.stats.high_score)
               path.write_text(contents)
-              
          sys.exit() 
 if __name__ == '__main__': 
     ai = AlienInvasion()
