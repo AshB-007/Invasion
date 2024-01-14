@@ -5,9 +5,9 @@ class Settings:
        #Screen Settings
        self.height = 1200
        self.width =  800
-       self.bg_color = (150,215,250)
+       self.bg_color = (0,0,0)
        self.laserfier_limit = 2
-       self.bullet_width = 30
+       self.bullet_width = 3
        self.bullet_height = 30
        self.bullet_color = (250,50,50)
        self.bullets_allowed = 3
@@ -16,9 +16,9 @@ class Settings:
        self.score_scale = 1.5
        self.intialize_dynamic_settings()
     def intialize_dynamic_settings(self):
-       self.laserfier_speed = 4.0
-       self.bullet_speed = 7.0
-       self.quasi_speed = 3.0
+       self.laserfier_speed = 2.0
+       self.bullet_speed = 4.0
+       self.quasi_speed = 1.5
        self.fleet_direction = 1
        self.quasi_points = 50      
     def increase_speed(self):

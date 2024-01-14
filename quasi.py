@@ -8,7 +8,7 @@ class Quasi(Sprite):
        super().__init__()
        self.screen = ai_game.screen
        self.settings = ai_game.settings
-       self.image = pygame.image.load("images/indian.bmp")
+       self.image = pygame.image.load("images/Quasi.bmp")
        self.rect = self.image.get_rect()
        self.rect.x = self.rect.width
        self.rect.y = self.rect.height
